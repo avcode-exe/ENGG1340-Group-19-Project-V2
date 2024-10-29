@@ -4,7 +4,7 @@
 /**
  * @brief Constructs a Maze object and initializes all cells in the maze to be walls.
  */
-Maze::Maze() : startX(1), startY(1){
+Maze::Maze() : startX(1), startY(1) {
     for (int y = 0; y < SIZE; y++) {
         for (int x = 0; x < SIZE; x++) {
             maze[y][x] = WALL;
@@ -26,6 +26,7 @@ bool Maze::checkduplicate(int x, int y) {
     }
     return true;
 }
+
 /**
  * @brief Generates the maze using recursive randomized Prim's Algorithm.
  * @param x The x-coordinate of the current cell
@@ -40,13 +41,14 @@ bool Maze::checkduplicate(int x, int y) {
  */
 void Maze::generateMaze(int x, int y) {
     // Initialize random number generator
-    srand((unsigned) time(NULL));
+    std::random_device rd;
+    std::mt19937 gen(rd());
 
     // Selected (x, y) to be the starting point (step 1)
     maze[x][y] = PATH;
 
     // Find all possible frontiers (step 2)
-    for (vector<int> direction : directions) {
+    for (const auto& direction : directions) {
         int nextX = x + direction[0];
         int nextY = y + direction[1];
         if (nextX > 0 && nextX < SIZE && nextY > 0 && nextY < SIZE && maze[nextX][nextY] == WALL && checkduplicate(nextX, nextY)) {
@@ -60,8 +62,9 @@ void Maze::generateMaze(int x, int y) {
 
     // Step 3 to 6
     while (!potentialFrontier.empty()) {
-        int randomIndex = rand() % potentialFrontier.size();
-        vector<int> randomFrontier = potentialFrontier[randomIndex];
+        std::uniform_int_distribution<> dis(0, potentialFrontier.size() - 1);
+        int randomIndex = dis(gen);
+        auto randomFrontier = potentialFrontier[randomIndex];
         potentialFrontier.erase(potentialFrontier.begin() + randomIndex);
         int frontierX = randomFrontier[2];
         int frontierY = randomFrontier[3];
@@ -71,7 +74,6 @@ void Maze::generateMaze(int x, int y) {
             maze[wallX][wallY] = PATH;
             maze[frontierX][frontierY] = PATH;
             generateMaze(frontierX, frontierY);
-
         }
     }
 }
@@ -102,20 +104,8 @@ void Maze::markNoMonsterZone(int cx, int cy) {
  * @brief Places monsters in dead ends near the entrance of the maze.
  * @param density The density of monsters to be placed (0.0 to 1.0).
  */
-//void Maze::placeMonsters(float density, Cell* path) {
-//    for (int y = 1; y < SIZE - 1; y++) {
-//        for (int x = 1; x < SIZE - 1; x++) {
-//            if (maze[y][x] == PATH && isDeadEnd(x, y) && !noMonsterZone[y][x] && !isOnPath(x, y, path)) {
-//                float chance = static_cast<float>(rand()) / static_cast<float>(RAND_MAX);
-//                if (chance < density && !isOnPath(x, y, path)) {
-//                    maze[y][x] = 'M'; // Place monster
-//                }
-//            }
-//        }
-//    }
-//}
 void Maze::placeMonsters(float density, Cell* path) {
-    vector<pair<int, int>> potentialMonsterPositions;
+    std::vector<std::pair<int, int>> potentialMonsterPositions;
     for (int y = 1; y < SIZE - 1; y++) {
         for (int x = 1; x < SIZE - 1; x++) {
             if (maze[y][x] == PATH && isDeadEnd(x, y) && !noMonsterZone[y][x] && !isOnPath(x, y, path) && !isNearOtherMonster(x, y)) {

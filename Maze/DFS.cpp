@@ -14,29 +14,27 @@
  * @return True if a path from the starting position to the goal position is
  * found, false otherwise.
  */
-bool dfs(vector<vector<char>> &maze, int row, int col, Cell *&path, int goalRow,
-         int goalCol) {
-  if (row < 0 || row >= maze.size() || col < 0 || col >= maze[0].size() ||
-      maze[row][col] == '#') {
+bool dfs(vector<vector<char>> &maze, int row, int col, Cell *&path, int goalRow, int goalCol) {
+    if (row < 0 || row >= maze.size() || col < 0 || col >= maze[0].size() || maze[row][col] == '#') {
+        return false;
+    }
+
+    if (row == goalRow && col == goalCol) {
+        path = new Cell{row, col, path};
+        return true;
+    }
+
+    maze[row][col] = '#';
+
+    if (dfs(maze, row - 1, col, path, goalRow, goalCol) ||
+        dfs(maze, row + 1, col, path, goalRow, goalCol) ||
+        dfs(maze, row, col - 1, path, goalRow, goalCol) ||
+        dfs(maze, row, col + 1, path, goalRow, goalCol)) {
+        path = new Cell{row, col, path};
+        return true;
+    }
+
     return false;
-  }
-
-  if (row == goalRow && col == goalCol) {
-    path = new Cell{row, col, path};
-    return true;
-  }
-
-  maze[row][col] = '#';
-
-  if (dfs(maze, row - 1, col, path, goalRow, goalCol) ||
-      dfs(maze, row + 1, col, path, goalRow, goalCol) ||
-      dfs(maze, row, col - 1, path, goalRow, goalCol) ||
-      dfs(maze, row, col + 1, path, goalRow, goalCol)) {
-    path = new Cell{row, col, path};
-    return true;
-  }
-
-  return false;
 }
 
 /**
@@ -52,11 +50,11 @@ bool dfs(vector<vector<char>> &maze, int row, int col, Cell *&path, int goalRow,
  * path.
  */
 void deletePath(Cell *path) {
-  while (path != nullptr) {
-    Cell *next = path->next;
-    delete path;
-    path = next;
-  }
+    while (path != nullptr) {
+        Cell *next = path->next;
+        delete path;
+        path = next;
+    }
 }
 
 /**
@@ -67,27 +65,25 @@ void deletePath(Cell *path) {
  * @return int Returns 0 if the program executed successfully.
  */
 Cell *findPath() {
-  ifstream file("maze.txt");
-  if (!file) {
-    Cell *temp = nullptr;
-    // cout << "Failed to open the maze file." << endl;
-    return temp;
-  }
+    ifstream file("maze.txt");
+    if (!file) {
+        return nullptr;
+    }
 
-  vector<vector<char>> maze;
-  string line;
-  while (getline(file, line)) {
-    maze.push_back(vector<char>(line.begin(), line.end()));
-  }
+    vector<vector<char>> maze;
+    string line;
+    while (getline(file, line)) {
+        maze.push_back(vector<char>(line.begin(), line.end()));
+    }
 
-  int startRow = 0;
-  int startCol = 1;
-  int goalRow = maze.size() - 1;
-  int goalCol = maze[0].size() - 2;
+    int startRow = 0;
+    int startCol = 1;
+    int goalRow = maze.size() - 1;
+    int goalCol = maze[0].size() - 2;
 
-  Cell *path = nullptr;
-  vector<vector<char>> mazeCopy = maze;
-  dfs(mazeCopy, startRow, startCol, path, goalRow, goalCol);
+    Cell *path = nullptr;
+    vector<vector<char>> mazeCopy = maze;
+    dfs(mazeCopy, startRow, startCol, path, goalRow, goalCol);
 
-  return path;
+    return path;
 }

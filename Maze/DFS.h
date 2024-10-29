@@ -27,9 +27,9 @@ struct Cell {
 bool dfs(vector<vector<char>>& maze, int row, int col, Cell*& path, int goalRow, int goalCol);
 
 /**
- * @brief The main function reads a maze from a file, performs a depth-first search (DFS) to find a path from the start to the goal, and prints the maze with the path marked.
+ * @brief Reads a maze from a file and performs a depth-first search (DFS) to find a path from the start to the goal.
  *
- * @return int Returns 0 if the program executed successfully.
+ * @return A pointer to the first Cell in the linked list representing the path, or nullptr if no path is found.
  */
 Cell* findPath();
 

@@ -85,8 +85,7 @@ void display(char cord[][MSIZE], int posX, int posY, bool flagMode, string messa
         };
         addch('\n');
     };
-    printw("Current coordinates: %d %d %s", posX, posY,
-           flagMode ? "(flag ON)" : "(flag OFF)");
+    printw("Current coordinates: %d %d %s", posX, posY, flagMode ? "(flag ON)" : "(flag OFF)");
     printw("\n");
     if (message == "")
         printw("Use spacebar to select tile, 'f' to flag");
@@ -125,10 +124,7 @@ void initGameBoard(char cord[][MSIZE]) {
  * @return false If the cell is hidden or flagged.
  */
 bool checkIfRevealed(char cord[][MSIZE], int row, int col) {
-    if (cord[row][col] == '#' || cord[row][col] == 'F') {
-        return false;
-    };
-    return true;
+    return cord[row][col] != '#' && cord[row][col] != 'F';
 }
 
 /**
@@ -182,10 +178,7 @@ bool revealPos(char cord[][MSIZE], char gameBoard[][MSIZE], int row, int col, ve
  * @return true if a mine is found at the specified coordinates, false otherwise.
  */
 bool checkIfMineFound(char cord[][MSIZE], int row, int col) {
-    if (cord[row][col] == 'X') {
-        return true;
-    }
-    return false;
+    return cord[row][col] == 'X';
 }
 
 /**
@@ -201,11 +194,8 @@ bool checkIfMineFound(char cord[][MSIZE], int row, int col) {
 void placeFlag(char cord[][MSIZE], int row, int col) {
     if (cord[row][col] == '#') {
         cord[row][col] = 'F';
-        return;
-    }
-    if (cord[row][col] == 'F') {
+    } else if (cord[row][col] == 'F') {
         cord[row][col] = '#';
-        return;
     }
 }
 
@@ -220,15 +210,14 @@ void placeFlag(char cord[][MSIZE], int row, int col) {
  * @return true if all cells are revealed and the game is won, false otherwise.
  */
 bool checkIfGameWin(char cord[][MSIZE]) {
-    bool gameWin = true;
     for (int r = 0; r < MSIZE; r++) {
         for (int c = 0; c < MSIZE; c++) {
             if (cord[r][c] == '#') {
-                gameWin = false;
+                return false;
             }
         }
-    };
-    return gameWin;
+    }
+    return true;
 }
 
 /**
@@ -266,54 +255,59 @@ int minesweeper() {
             display(gameBoard, posX, posY, flagMode, errorMsg);
             usrInput = getch();
             switch (usrInput) {
-            case 'w':
-                if (posY > 0)
-                    posY--;
-                break;
-            case 's':
-                if (posY + 1 < MSIZE)
-                    posY++;
-                break;
-            case 'a':
-                if (posX > 0)
-                    posX--;
-                break;
-            case 'd':
-                if (posX + 1 < MSIZE)
-                    posX++;
-                break;
-            case ' ':
-                col_in = posX;
-                row_in = posY;
-                act = true;
-                break;
-            case 'f':
-                flagMode = !flagMode;
-                break;
+                case 'w':
+                    if (posY > 0) {
+                        posY--;
+                    }
+                    break;
+                case 's':
+                    if (posY + 1 < MSIZE) {
+                        posY++;
+                    }
+                    break;
+                case 'a':
+                    if (posX > 0) {
+                        posX--;
+                    }
+                    break;
+                case 'd':
+                    if (posX + 1 < MSIZE) {
+                        posX++;
+                    }
+                    break;
+                case ' ':
+                    col_in = posX;
+                    row_in = posY;
+                    act = true;
+                    break;
+                case 'f':
+                    flagMode = !flagMode;
+                    break;
             }
         }
         if (flagMode) {
             if (checkIfRevealed(gameBoard, row_in, col_in)) {
                 errorMsg = "Unable to flag revealed tiles. Please choose another one.";
-                continue;
-            };
-            placeFlag(gameBoard, row_in, col_in);
+            } else {
+                placeFlag(gameBoard, row_in, col_in);
+            }
         } else {
             if (checkIfRevealed(gameBoard, row_in, col_in)) {
                 errorMsg = "Tile was already revealed. Please choose another one.";
-                continue;
-            };
-            vector<vector<int>> visited{};
-            revealPos(mf, gameBoard, row_in, col_in, visited);
+            } else {
+                vector<vector<int>> visited{};
+                revealPos(mf, gameBoard, row_in, col_in, visited);
 
-            if (checkIfMineFound(mf, row_in, col_in)) {
-                gameLose == true;
-                display(gameBoard, posX, posY, flagMode, "GAME OVER!\n You Lose!");
-                return -1;
+                if (checkIfMineFound(mf, row_in, col_in)) {
+                    gameLose = true;
+                    display(gameBoard, posX, posY, flagMode, "GAME OVER!\n You Lose!");
+                    return -1;
+                }
             }
         }
-    };
-
+    }
+    clear();
+    refresh();
     display(gameBoard, posX, posY, flagMode, "Cleared!");
     return 0;
 }

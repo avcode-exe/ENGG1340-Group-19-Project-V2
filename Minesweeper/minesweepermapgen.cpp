@@ -47,12 +47,12 @@ int randcord(int size) {
  * @param y y-coordinate
  * @param size Size of the game board
  */
-bool checkismine(int x, int y, int size, char cord[][MSIZE]) {
-    if (x < 0 || x >= size || y < 0 || y >= size) {
-        return false;
-	}
-    return cord[x][y] == 'X';
-}
+// bool checkismine(int x, int y, int size, char cord[][MSIZE]) {
+//     if (x < 0 || x >= size || y < 0 || y >= size) {
+//         return false;
+// 	}
+//     return cord[x][y] == 'X';
+// }
 
 /**
  * @brief Count the number of mines
@@ -67,11 +67,13 @@ int countmine(int x, int y, int size, char cord[][MSIZE]) {
     for (int i = -1; i <= 1; ++i) {
         for (int j = -1; j <= 1; ++j) {
             if (i == 0 && j == 0) {
-				continue;
-			}
-            if (checkismine(x + i, y + j, size, cord)) {
+                continue;
+            }
+            int newX = x + i;
+            int newY = y + j;
+            if (newX >= 0 && newX < size && newY >= 0 && newY < size && cord[newX][newY] == 'X') {
                 mines += 1;
-			}
+            }
         }
     }
 

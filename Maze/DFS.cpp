@@ -65,7 +65,7 @@ void deletePath(Cell *path) {
  * @return int Returns 0 if the program executed successfully.
  */
 Cell *findPath() {
-    ifstream file("maze.txt");
+    ifstream file(".gameConfig/maze.txt");
     if (!file) {
         return nullptr;
     }

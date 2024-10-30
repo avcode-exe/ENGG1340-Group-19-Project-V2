@@ -6,6 +6,7 @@
 #include <string>
 #include <thread>
 #include <unordered_map>
+#include <fstream>
 
 void displayMap(const vector<string> &mazemap, int screenSizeY, int linepointer, int playerPosY, int playerPosX, const vector<pair<int, int>> &monsterPositions, int playerHP);
 bool moveMonsters(vector<string> &mazemap, vector<pair<int, int>> &monsterPositions, pair<int, int> playerPos);
@@ -14,8 +15,10 @@ void moveMonster(vector<string> &mazemap, pair<int, int> &monsterPos, int monste
 unordered_map<int, pair<int, int>> monsterDirections;
 pair<int, int> findNearestCheckpoint(const vector<pair<int, int>> &checkpoints, int playerPosY, int playerPosX);
 void storeStatus(int playerPosY, int playerPosX, int playerHP, int linepointer);
+void createEmptyFiles();
 
 int main() {
+    createEmptyFiles();
     char newGame;
     bool gameRunning = true;
     bool win = false;
@@ -333,4 +336,10 @@ void storeStatus(int playerPosY, int playerPosX, int playerHP, int linepointer) 
     }
     statusfile << playerPosY << " " << playerPosX << " " << playerHP << " " << linepointer;
     statusfile.close();
+}
+
+void createEmptyFiles() {
+    std::ofstream file1("../.gameConfig/maze.txt");
+    std::ofstream file2("../.gameConfig/minefield.txt");
+    std::ofstream file3("../.gameConfig/status.txt");
 }

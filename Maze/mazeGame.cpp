@@ -9,7 +9,7 @@ using namespace std;
 void displayMap(vector<string>& mazemap, int screenSizeX, int screenSizeY, int linepointer, int playerPosY, int playerPosX);
 
 int main() {
-    ifstream mazefile{".gamConfig/maze.txt"};
+    ifstream mazefile{".gameConfig/maze.txt"}; // Corrected file path
 
     if (!mazefile) {
         cerr << "Maze map not found!" << endl;

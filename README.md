@@ -28,6 +28,10 @@ The goal is to reach the exit of the maze before the player loses all health poi
 
 ## Compilation and execution instructions
 
+If you don't have `make` or `g++` installed:
+* `sudo apt install build-essential gdb`
+* `sudo apt install make`
+
 Install depedencies:
 * `sudo apt install libncurses5-dev libncursesw5-dev`
 

@@ -1,5 +1,5 @@
-#ifndef MINEWSEEPER_H
-#define MINEWSEEPER_H
+#ifndef MINESWEEPER_H
+#define MINESWEEPER_H
 
 int minesweeper();
 

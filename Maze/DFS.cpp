@@ -76,10 +76,19 @@ Cell *findPath() {
         maze.push_back(vector<char>(line.begin(), line.end()));
     }
 
+    if (maze.empty() || maze[0].empty()) {
+        return nullptr;
+    }
+
     int startRow = 0;
     int startCol = 1;
     int goalRow = maze.size() - 1;
     int goalCol = maze[0].size() - 2;
+
+    if (startRow < 0 || startRow >= maze.size() || startCol < 0 || startCol >= maze[0].size() ||
+        goalRow < 0 || goalRow >= maze.size() || goalCol < 0 || goalCol >= maze[0].size()) {
+        return nullptr;
+    }
 
     Cell *path = nullptr;
     vector<vector<char>> mazeCopy = maze;

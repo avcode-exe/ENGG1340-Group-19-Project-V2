@@ -7,6 +7,7 @@
 #include <thread>
 #include <unordered_map>
 #include <fstream>
+#include <sys/stat.h>
 
 void displayMap(const vector<string> &mazemap, int screenSizeY, int linepointer, int playerPosY, int playerPosX, const vector<pair<int, int>> &monsterPositions, int playerHP);
 bool moveMonsters(vector<string> &mazemap, vector<pair<int, int>> &monsterPositions, pair<int, int> playerPos);
@@ -18,7 +19,16 @@ void storeStatus(int playerPosY, int playerPosX, int playerHP, int linepointer);
 void createEmptyFiles();
 
 int main() {
-    createEmptyFiles();
+    bool folderExists = false;
+    struct stat st;
+    if (stat(".gameConfig", &st) == 0) {
+        if (st.st_mode & S_IFDIR != 0) {
+            folderExists = true;
+        }
+    }
+    if (!folderExists) {
+        createEmptyFiles();
+    }
     char newGame;
     bool gameRunning = true;
     bool win = false;
@@ -339,7 +349,22 @@ void storeStatus(int playerPosY, int playerPosX, int playerHP, int linepointer) 
 }
 
 void createEmptyFiles() {
-    std::ofstream file1("../.gameConfig/maze.txt");
-    std::ofstream file2("../.gameConfig/minefield.txt");
-    std::ofstream file3("../.gameConfig/status.txt");
+    const int dir_err = mkdir(".gameConfig", S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH);
+    std::ofstream file1(".gameConfig/maze.txt");
+    std::ofstream file2(".gameConfig/minefield.txt");
+    std::ofstream file3(".gameConfig/status.txt");
+
+    file3.close();
+
+    // write initial status file
+    ofstream statusfile(".gameConfig/status.txt");
+    if (statusfile.fail()) {
+        cerr << "Error opening status file" << endl;
+        return;
+    }
+    statusfile << 0 << " " << 1 << " " << 5 << " " << 0;
+    statusfile.close();
+
+    file1.close();
+    file2.close();
 }

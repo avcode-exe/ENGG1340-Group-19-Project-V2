@@ -9,6 +9,8 @@
 #include <fstream>
 #include <sys/stat.h>
 
+using namespace std;
+
 void displayMap(const vector<string> &mazemap, int screenSizeY, int linepointer, int playerPosY, int playerPosX, const vector<pair<int, int>> &monsterPositions, int playerHP);
 bool moveMonsters(vector<string> &mazemap, vector<pair<int, int>> &monsterPositions, pair<int, int> playerPos);
 bool isFree(const vector<string> &mazemap, int y, int x);

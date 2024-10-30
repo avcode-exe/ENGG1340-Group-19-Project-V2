@@ -14,7 +14,7 @@
 #include <fstream>
 #include "DFS.h"
 
-using namespace std;
+// Removed 'using namespace std;' to prevent namespace pollution in header files
 
 #define SIZE 55 // Update the size of the maze here
 #define WALL 1
@@ -30,8 +30,8 @@ public:
     int startY; /**< The y-coordinate of the starting point of the maze */
     int maze[SIZE][SIZE]; /**< The maze grid */
     bool noMonsterZone[SIZE][SIZE] = {false};
-    vector<vector<int>> directions = { {0, -2}, {2, 0}, {0, 2}, {-2, 0} }; /**< The possible directions to move in the maze */
-    vector<vector<int>> potentialFrontier; /**< The list of potential frontier cells */
+    std::vector<std::vector<int>> directions = { {0, -2}, {2, 0}, {0, 2}, {-2, 0} }; /**< The possible directions to move in the maze */
+    std::vector<std::vector<int>> potentialFrontier; /**< The list of potential frontier cells */
 
     /**
      * @brief Constructs a Maze object and initializes all cells in the maze to be walls.
@@ -44,7 +44,7 @@ public:
      * @param y The y-coordinate of the cell
      * @return True if the cell is not a duplicate, false otherwise
      */
-    bool checkduplicate(int x, int y);
+    bool checkDuplicate(int x, int y);
 
     /**
      * @brief Generates the maze using recursive randomized Prim's Algorithm.

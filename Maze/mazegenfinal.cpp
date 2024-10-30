@@ -1,5 +1,13 @@
+#include <iostream>
+#include <vector>
 #include <random>
+#include <ctime>
+#include <algorithm>
+#include <fstream>
 #include "mazeGame.h"
+#include "DFS.h"
+
+using namespace std;
 
 /**
  * @brief Constructs a Maze object and initializes all cells in the maze to be walls.
@@ -18,7 +26,7 @@ Maze::Maze() : startX(1), startY(1) {
  * @param y The y-coordinate of the cell
  * @return True if the cell is not a duplicate, false otherwise
  */
-bool Maze::checkduplicate(int x, int y) {
+bool Maze::checkDuplicate(int x, int y) {
     for (const auto& vec : potentialFrontier) {
         if (vec[2] == x && vec[3] == y) {
             return false;
@@ -51,7 +59,7 @@ void Maze::generateMaze(int x, int y) {
     for (const auto& direction : directions) {
         int nextX = x + direction[0];
         int nextY = y + direction[1];
-        if (nextX > 0 && nextX < SIZE && nextY > 0 && nextY < SIZE && maze[nextX][nextY] == WALL && checkduplicate(nextX, nextY)) {
+        if (nextX > 0 && nextX < SIZE && nextY > 0 && nextY < SIZE && maze[nextX][nextY] == WALL && checkDuplicate(nextX, nextY)) {
             potentialFrontier.push_back({x, y, nextX, nextY});
         }
     }
@@ -265,7 +273,7 @@ void Maze::printMaze() {
  * @brief Saves the maze to a file.
  */
 void Maze::saveMaze() {
-    ofstream file(".gameConfig/maze.txt");
+    std::ofstream file(".gameConfig/maze.txt"); // Corrected file path
     if (file.is_open()) {
         for (int y = 0; y < SIZE; y++) {
             for (int x = 0; x < SIZE; x++) {

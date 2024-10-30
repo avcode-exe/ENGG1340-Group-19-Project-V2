@@ -1,11 +1,10 @@
 #ifndef DFS_H
 #define DFS_H
 
-#include <iostream>
-#include <fstream>
 #include <vector>
+#include <fstream>
 
-using namespace std;
+// Removed 'using namespace std;' from header file
 
 struct Cell {
     int row;
@@ -24,7 +23,7 @@ struct Cell {
  * @param goalCol The column position of the goal in the maze.
  * @return True if a path from the starting position to the goal position is found, false otherwise.
  */
-bool dfs(vector<vector<char>>& maze, int row, int col, Cell*& path, int goalRow, int goalCol);
+bool dfs(std::vector<std::vector<char>>& maze, int row, int col, Cell*& path, int goalRow, int goalCol);
 
 /**
  * @brief Reads a maze from a file and performs a depth-first search (DFS) to find a path from the start to the goal.

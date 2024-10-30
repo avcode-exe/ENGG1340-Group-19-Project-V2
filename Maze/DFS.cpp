@@ -1,5 +1,7 @@
 #include "DFS.h"
 
+using namespace std;
+
 /**
  * Performs a depth-first search (DFS) on a maze to find a path from a given
  * starting position to a goal position.

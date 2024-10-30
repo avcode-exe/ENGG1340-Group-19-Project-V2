@@ -1,7 +1,10 @@
-# ENGG1340-Group-19-Project
+# ENGG1340-Group-19-Project-V2
 
-HKU ENGG1340/COMP2113 (2023 - 2024)
-Group 19 Project
+This repository is the extended version of the following repository: https://github.com/avcode-exe/ENGG1340-Group-19-Project
+
+# Old repository info:
+
+HKU ENGG1340/COMP2113 (2023 - 2024) Group 19 Project
 
 ## Groupmates
 
@@ -21,7 +24,9 @@ If the player loses during the minesweeper game, a health point will be deducted
 
 The goal is to reach the exit of the maze before the player loses all health points.
 
-## Installation
+# New repository info:
+
+## Compilation and execution instructions
 
 Install depedencies:
 * `sudo apt install libncurses5-dev libncursesw5-dev`
@@ -55,15 +60,6 @@ Clone the repository:
 ## List of non-standard C/C++ libraries
 
 - ncurses
-
-## Compilation and execution instructions
-
-Download the repository as a zip file. Alternatively, you can also run this command to clone the repository to your local device:
-```sh
-git clone https://github.com/avcode-exe/ENGG1340-Group-19-Project-V2.git
-```
-
-Navigate to the folder. To run the game, simply run `make run` to compile and execute the program.
 
 ## Gameplay Tutorial
 

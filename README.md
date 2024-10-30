@@ -21,6 +21,16 @@ If the player loses during the minesweeper game, a health point will be deducted
 
 The goal is to reach the exit of the maze before the player loses all health points.
 
+## Installation
+
+Install depedencies:
+* `sudo apt install libncurses5-dev libncursesw5-dev`
+
+Clone the repository:
+1. `git clone https://github.com/avcode-exe/ENGG1340-Group-19-Project-V2.git`
+2. `cd ENGG1340-Group-19-Project-V2`
+3. `make run`
+
 ## List of Features
 
 - A maze generated using recursive randomized Prim's algorithm
@@ -50,7 +60,7 @@ The goal is to reach the exit of the maze before the player loses all health poi
 
 Download the repository as a zip file. Alternatively, you can also run this command to clone the repository to your local device:
 ```sh
-git clone https://github.com/avcode-exe/ENGG1340-Group-19-Project.git
+git clone https://github.com/avcode-exe/ENGG1340-Group-19-Project-V2.git
 ```
 
 Navigate to the folder. To run the game, simply run `make run` to compile and execute the program.

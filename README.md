@@ -28,17 +28,19 @@ The goal is to reach the exit of the maze before the player loses all health poi
 
 ## Compilation and execution instructions
 
-If you don't have `make` or `g++` installed:
-* `sudo apt install build-essential gdb`
-* `sudo apt install make`
+1. If you don't have `make` or `g++` installed:
+	* `sudo apt install build-essential gdb`
+	* `sudo apt install make`
 
-Install depedencies:
-* `sudo apt install libncurses5-dev libncursesw5-dev`
+2. **Install dependencies:**
+	* `sudo apt install libncurses5-dev libncursesw5-dev`
 
-Clone the repository:
-1. `git clone https://github.com/avcode-exe/ENGG1340-Group-19-Project-V2.git`
-2. `cd ENGG1340-Group-19-Project-V2`
-3. `make run`
+3. **Clone the repository:**
+	* `git clone https://github.com/avcode-exe/ENGG1340-Group-19-Project-V2.git`
+
+4. **Compile and run the game:**
+	* `cd ENGG1340-Group-19-Project-V2`
+	* `make run` or `make` + `./mazeGame`
 
 ## List of Features
 
@@ -67,46 +69,65 @@ Clone the repository:
 
 ## Gameplay Tutorial
 
-After running `make run` to start the game, you will be prompted whether a new maze should be generated or not:
-- "y": A new maze will be generated
-- "n": The previous saved maze will be used
+### Starting the Game
 
-You will begin at the starting position of the maze.
-Navigate in the maze using W, A, S, and D keys. The number of health points remaining is shown on the right with "HP". Try to reach the goal position without losing all health points.
-If you get hit by a monster, you will be sent to a game of minesweeper.
+1. **Run the Game**: After compiling the game using `make run`, you will be prompted to choose whether to generate a new maze or use the previously saved maze:
+   - Enter `y` to generate a new maze.
+   - Enter `n` to use the previously saved maze.
 
-In the minesweeper game, you can navigate in the game board using W, A, S, and D keys.
-To reveal a tile, press the spacebar. If a mine, denoted with "X", is revealed, you lose the minesweeper game and will return to the maze with one health point deducted. Otherwise, the minesweeper game continues.
+2. **Initial Setup**: You will start at the initial position of the maze with a certain number of health points (HP).
 
-For example, the following shows that a mine is found:
-```
-###
-#X#
-###
-```
+### Navigating the Maze
 
-If a number is shown instead of a mine, the number represents how many mines are nearby in a 3x3 range with the number at the center of the range.
+- **Movement**: Use the following keys to navigate through the maze:
+  - `W`: Move up
+  - `A`: Move left
+  - `S`: Move down
+  - `D`: Move right
 
-For example, the following snippet shows that there are 2 mines within this 3x3 range:
+- **Objective**: The goal is to reach the exit of the maze without losing all your health points.
 
-```
-###
-#2#
-###
-```
+- **Monsters**: Monsters are represented by the character `M` and move dynamically within the maze. Avoid them to prevent losing health points.
 
-If an empty cell is revealed instead of a number, it indicates that there are no mines near this tile.
+### Minesweeper Game
 
-For example, the following snippet shows that there are no mines within this 3x3 range:
+If you get hit by a monster, you will be sent to a game of minesweeper:
 
-```
-###
-# #
-###
-```
+1. **Movement**: Use the following keys to navigate through the minesweeper board:
+   - `W`: Move up
+   - `A`: Move left
+   - `S`: Move down
+   - `D`: Move right
 
-Apart from revealing tiles, you can also toggle flag mode using the F key. To place a flag on a tile, make sure that flag mode is on, navigate to a tile and press spacebar. The letter "F" will show up on tiles with a flag placed on them.
+2. **Revealing Tiles**: Press the `spacebar` to reveal a tile:
+   - If a mine (denoted by `X`) is revealed, you lose the minesweeper game and return to the maze with one health point deducted.
+   - If a number is revealed, it indicates how many mines are nearby within a 3 by 3 range.
+   - If an empty cell is revealed, it indicates no mines are nearby.
 
-Keep in mind that you cannot choose tiles that are already revealed. However, you can choose tiles that have a flag placed on them because they have not been revealed yet.
+3. **Flag Mode**: Press `F` to toggle flag mode. In flag mode, press the `spacebar` to place a flag on a tile, marking it as a potential mine.
 
-Have fun!
+### Winning and Losing
+
+- **Winning**: Reach the exit of the maze to win the game.
+- **Losing**: If you lose all your health points, the game is over.
+
+### Saving and Resuming the Game
+
+- **Save Game**: The game state, including the player's position, health points, and maze configuration will be saved to a test file when exiting the game via `x` or `X`.
+- **Resume Game**: When starting the game, choose `n` to resume from the last saved state.
+
+### Additional Tips
+
+- **Health Points**: Keep an eye on your health points displayed on the right side of the screen.
+- **Avoid Monsters**: Plan your moves to avoid monsters and minimize health loss.
+
+Have fun and good luck navigating the maze and playing minesweeper!
+
+## License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## Acknowledgments
+
+- Thanks to the **HKU ENGG1340/COMP2113** course instructors and TAs for their guidance.
+- Special thanks to **all group members** for their contributions and hard work.

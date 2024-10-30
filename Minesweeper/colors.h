@@ -6,6 +6,26 @@
 
 using namespace std;
 
+/**
+ * @brief Sets the console text color based on the provided character value.
+ *
+ * This function changes the console text color using ANSI escape codes
+ * corresponding to the given character. The supported characters and their
+ * associated colors are:
+ * - '#' : Dim color
+ * - 'X' : Black text on red background
+ * - 'f' : Bright red text
+ * - '1' : Blue text
+ * - '2' : Green text
+ * - '3' : Red text
+ * - '4' : Bright blue text
+ * - '5' : Bright magenta text
+ * - '6' : Bright cyan text
+ * - '7' : Yellow text
+ * - '8' : Bright white text
+ *
+ * @param value The character representing the desired color.
+ */
 void setColor(char value) {
     static const unordered_map<char, string> colorCodes = {
         {'#', "\033[2m"},
@@ -27,6 +47,13 @@ void setColor(char value) {
     }
 }
 
+/**
+ * @brief Resets the terminal text color to the default.
+ * 
+ * This function outputs the ANSI escape code to reset the terminal text color
+ * to the default color. It is useful for ensuring that any colored text output
+ * is properly reset to avoid unintended color changes in subsequent text.
+ */
 void resetColor() {
     cout << "\033[0m";
 }

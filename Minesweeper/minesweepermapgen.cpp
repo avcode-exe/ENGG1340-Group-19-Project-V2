@@ -5,61 +5,35 @@
 #include <ctime>
 using namespace std;
 
-/**
- * @brief Generate a minesweeper game board
- * @param size Size of the game board
- * @param mines Number of mines
- */
-void minefieldgen(int size, int mines, char cord[][MSIZE]);
+// void minefieldgen(int size, int mines, char cord[][MSIZE]);
+// int randcord(int size);
+// bool checkismine(int x, int y, int size, char cord[][MSIZE]);
+// int countmine(int x, int y, int size, char cord[][MSIZE]);
 
 /**
- * @brief Generate a random number for coordinates
- * @param size Size of the game board
- */
-int randcord(int size);
-
-/**
- * @brief Check if the selected set of coordinates contains a mine
- * @param x x-coordinate
- * @param y y-coordinate
- * @param size Size of the game board
- */
-bool checkismine(int x, int y, int size, char cord[][MSIZE]);
-
-/**
- * @brief Count the number of mines
- * @param x x-coordinate
- * @param y y-coordinate
- */
-int countmine(int x, int y, int size, char cord[][MSIZE]);
-
-/**
- * @brief Generate a random number for coordinates
- * @param size Size of the game board
+ * @brief Generates a random coordinate within the given size.
+ * 
+ * This function returns a random integer between 0 (inclusive) and the specified size (exclusive).
+ * It uses the standard library function rand() to generate the random number.
+ * 
+ * @param size The upper limit (exclusive) for the random coordinate.
+ * @return int A random integer between 0 and size-1.
  */
 int randcord(int size) {
     return rand() % size;
 }
 
 /**
- * @brief Check if the selected set of coordinates contains a mine
- * @param x x-coordinate
- * @param y y-coordinate
- * @param size Size of the game board
- */
-// bool checkismine(int x, int y, int size, char cord[][MSIZE]) {
-//     if (x < 0 || x >= size || y < 0 || y >= size) {
-//         return false;
-// 	}
-//     return cord[x][y] == 'X';
-// }
-
-/**
- * @brief Count the number of mines
- * @param x x-coordinate
- * @param y y-coordinate
- * @param size Size of the game board
- * @param cord 2D array representing the game board
+ * @brief Counts the number of mines surrounding a given cell in a Minesweeper grid.
+ *
+ * This function checks the eight neighboring cells around the specified cell (x, y)
+ * in the Minesweeper grid and counts how many of them contain a mine ('X').
+ *
+ * @param x The x-coordinate of the cell to check.
+ * @param y The y-coordinate of the cell to check.
+ * @param size The size of the Minesweeper grid.
+ * @param cord A 2D array representing the Minesweeper grid, where 'X' denotes a mine.
+ * @return The number of mines surrounding the specified cell.
  */
 int countmine(int x, int y, int size, char cord[][MSIZE]) {
     int mines = 0;
@@ -81,10 +55,25 @@ int countmine(int x, int y, int size, char cord[][MSIZE]) {
 }
 
 /**
- * @brief Generate a minesweeper game board
- * @param size Size of the game board
- * @param mines Number of mines
- * @param cord 2D array representing the game board
+ * @brief Generates a minesweeper minefield and writes it to a file.
+ *
+ * This function initializes a minefield of given size, randomly places a specified number of mines,
+ * calculates the number of adjacent mines for each cell, and writes the resulting minefield to a file.
+ *
+ * @param size The size of the minefield (size x size).
+ * @param mines The number of mines to place in the minefield.
+ * @param cord A 2D array representing the minefield.
+ *
+ * The function performs the following steps:
+ * 1. Initializes all cells in the minefield to empty (' ').
+ * 2. Randomly places the specified number of mines ('X') in the minefield.
+ * 3. For each non-mine cell, calculates the number of adjacent mines and sets the cell to that number.
+ * 4. Writes the resulting minefield to a file named ".gameConfig/minefield.txt".
+ *
+ * Note:
+ * - The function assumes that the size of the 2D array `cord` is at least `size x size`.
+ * - The function uses a helper function `randcord(int)` to generate random coordinates.
+ * - The function uses a helper function `countmine(int, int, int, char[][MSIZE])` to count adjacent mines.
  */
 void minefieldgen(int size, int mines, char cord[][MSIZE]) {
     for (int i = 0; i < size; ++i) {
@@ -130,8 +119,15 @@ void minefieldgen(int size, int mines, char cord[][MSIZE]) {
     fout.close();
 }
 
+/**
+ * @brief Main function to generate a Minesweeper game map.
+ * 
+ * This function initializes the random number generator with the current time,
+ * creates a 2D array to represent the Minesweeper grid, and calls the 
+ * minefieldgen function to populate the grid with mines.
+ */
 void minewsweepergenmain() {
-    srand(time(NULL));  // Initialize rand()
+    srand(time(NULL));
     char cord[MSIZE][MSIZE];
 
     minefieldgen(MSIZE, MINES, cord);

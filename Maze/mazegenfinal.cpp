@@ -10,7 +10,10 @@
 using namespace std;
 
 /**
- * @brief Constructs a Maze object and initializes all cells in the maze to be walls.
+ * @brief Constructs a Maze object and initializes the maze grid.
+ * 
+ * This constructor initializes the maze grid to be completely filled with walls.
+ * It also sets the starting coordinates of the maze to (1, 1).
  */
 Maze::Maze() : startX(1), startY(1) {
     for (int y = 0; y < SIZE; y++) {
@@ -21,10 +24,17 @@ Maze::Maze() : startX(1), startY(1) {
 }
 
 /**
- * @brief Checks if a cell is a duplicate in the list of potential frontiers.
- * @param x The x-coordinate of the cell
- * @param y The y-coordinate of the cell
- * @return True if the cell is not a duplicate, false otherwise
+ * @brief Checks if a given coordinate (x, y) is a duplicate in the potentialFrontier list.
+ * 
+ * This function iterates through the potentialFrontier list and checks if any of the 
+ * elements have the same x and y coordinates as the provided (x, y). If a match is found, 
+ * it returns false indicating that the coordinate is a duplicate. If no match is found, 
+ * it returns true indicating that the coordinate is unique.
+ * 
+ * @param x The x-coordinate to check.
+ * @param y The y-coordinate to check.
+ * @return true if the coordinate (x, y) is unique in the potentialFrontier list.
+ * @return false if the coordinate (x, y) is a duplicate in the potentialFrontier list.
  */
 bool Maze::checkDuplicate(int x, int y) {
     for (const auto& vec : potentialFrontier) {
@@ -109,8 +119,18 @@ void Maze::markNoMonsterZone(int cx, int cy) {
 }
 
 /**
- * @brief Places monsters in dead ends near the entrance of the maze.
- * @param density The density of monsters to be placed (0.0 to 1.0).
+ * @brief Places monsters in the maze based on the given density.
+ * 
+ * This function identifies potential positions for monsters within the maze,
+ * ensuring that they are placed on dead-end paths and not in restricted zones.
+ * The number of monsters is determined by the density parameter, and their
+ * positions are randomly selected from the potential positions.
+ * 
+ * @param density A float value representing the density of monsters to be placed.
+ *                This value should be between 0 and 1, where 0 means no monsters
+ *                and 1 means maximum possible monsters based on potential positions.
+ * @param path A pointer to the Cell structure representing the path in the maze.
+ *             This is used to ensure monsters are not placed on the main path.
  */
 void Maze::placeMonsters(float density, Cell* path) {
     std::vector<std::pair<int, int>> potentialMonsterPositions;
@@ -136,6 +156,17 @@ void Maze::placeMonsters(float density, Cell* path) {
     }
 }
 
+/**
+ * @brief Checks if there is another monster within a 5x5 grid around the given coordinates.
+ * 
+ * This function iterates through a 5x5 grid centered at the given (x, y) coordinates
+ * to determine if there is a monster ('M') in any of the surrounding cells.
+ * 
+ * @param x The x-coordinate to check around.
+ * @param y The y-coordinate to check around.
+ * @return true If there is a monster within the 5x5 grid around the given coordinates.
+ * @return false If there are no monsters within the 5x5 grid around the given coordinates.
+ */
 bool Maze::isNearOtherMonster(int x, int y) {
     for (int dx = -5; dx <= 5; dx++) {
         for (int dy = -5; dy <= 5; dy++) {
@@ -150,10 +181,13 @@ bool Maze::isNearOtherMonster(int x, int y) {
 }
 
 /**
- * @brief Checks if the cell at the given coordinates is a dead end.
- * @param x The x-coordinate of the cell
- * @param y The y-coordinate of the cell
- * @return True if the cell is a dead end, false otherwise
+ * @brief Checks if the given cell (x, y) in the maze is a dead end.
+ *
+ * A cell is considered a dead end if it is a path cell and has only one adjacent path cell.
+ *
+ * @param x The x-coordinate of the cell to check.
+ * @param y The y-coordinate of the cell to check.
+ * @return true if the cell is a dead end, false otherwise.
  */
 bool Maze::isDeadEnd(int x, int y) {
     if (maze[y][x] == PATH) {
@@ -174,24 +208,28 @@ bool Maze::isDeadEnd(int x, int y) {
 }
 
 /**
- * @brief Places checkpoints in the maze.
- *
- * This function places six checkpoints in the maze at predefined positions.
- * It uses two helper lambda functions: isPath and tryPlacingCheckpoint.
- * isPath checks if a cell is a path and not a wall.
- * tryPlacingCheckpoint attempts to place a checkpoint at a given position if it's not a wall.
- * If the position is a wall, it finds the nearest path cell in the vicinity and places the checkpoint there.
- * After placing a checkpoint, it marks a 5x5 area around the checkpoint as a no-monster zone.
- *
- * The six positions for the checkpoints are defined as follows:
- * - Top-left: (offsetX, offsetY)
- * - Top-right: (SIZE - offsetX - 1, offsetY)
- * - Middle-left: (offsetX, middleY)
- * - Middle-right: (SIZE - offsetX - 1, middleY)
- * - Bottom-left: (offsetX, SIZE - offsetY - 1)
- * - Bottom-right: (SIZE - offsetX - 1, SIZE - offsetY - 1)
- *
- * The offsets and middle coordinates are calculated based on the size of the maze.
+ * @brief Places checkpoints at predefined positions within the maze.
+ * 
+ * This function attempts to place checkpoints ('C') at six specific positions
+ * within the maze. If the intended position is a wall, it will search for the 
+ * nearest path cell in the vicinity and place the checkpoint there. Each time 
+ * a checkpoint is placed, the surrounding area is marked as a no-monster zone.
+ * 
+ * The predefined positions for the checkpoints are:
+ * - Top-left
+ * - Top-right
+ * - Middle-left
+ * - Middle-right
+ * - Bottom-left
+ * - Bottom-right
+ * 
+ * The exact positions are determined by dividing the maze size into quarters 
+ * and placing the checkpoints accordingly.
+ * 
+ * The function uses two helper functions:
+ * - isPath: Checks if a given cell is a path and not a wall.
+ * - tryPlacingCheckpoint: Attempts to place a checkpoint at a given position 
+ *   or the nearest path cell if the position is a wall.
  */
 void Maze::placeCheckpoints() {
     // Function to check if a cell is a path and not a wall
@@ -239,6 +277,18 @@ void Maze::placeCheckpoints() {
     tryPlacingCheckpoint(SIZE - offsetX - 1, SIZE - offsetY - 1);
 }
 
+/**
+ * @brief Checks if a given cell (x, y) is on the specified path.
+ * 
+ * This function iterates through the linked list of cells representing the path
+ * and checks if any cell in the path matches the given coordinates (x, y).
+ * 
+ * @param x The x-coordinate (column) of the cell to check.
+ * @param y The y-coordinate (row) of the cell to check.
+ * @param path A pointer to the head of the linked list representing the path.
+ * @return true If the cell (x, y) is on the path.
+ * @return false If the cell (x, y) is not on the path.
+ */
 bool Maze::isOnPath(int x, int y, Cell* path) {
     while (path != nullptr) {
         if (path->row == y && path->col == x) {
@@ -250,7 +300,16 @@ bool Maze::isOnPath(int x, int y, Cell* path) {
 }
 
 /**
- * @brief Prints the maze.
+ * @brief Prints the maze to the standard output.
+ * 
+ * This function iterates through the maze grid and prints each cell's content.
+ * - 'C' represents a checkpoint and is printed as 'C'.
+ * - 'M' represents a monster and is printed as 'M'.
+ * - The starting point (1, 0) and the ending point (SIZE-2, SIZE-1) are printed as spaces.
+ * - Walls are represented by the character '▓'.
+ * - Empty spaces are printed as spaces.
+ * 
+ * The maze is printed row by row.
  */
 void Maze::printMaze() {
     for (int y = 0; y < SIZE; y++) {
@@ -270,7 +329,17 @@ void Maze::printMaze() {
 }
 
 /**
- * @brief Saves the maze to a file.
+ * @brief Saves the current state of the maze to a file.
+ *
+ * This function writes the maze configuration to a file located at ".gameConfig/maze.txt".
+ * The maze is represented as a grid of characters, where:
+ * - 'C' represents a checkpoint.
+ * - 'M' represents a monster.
+ * - '#' represents a wall.
+ * - ' ' represents a path.
+ *
+ * The function handles special cases for the start and end points of the maze.
+ * If the file cannot be opened, an error message is printed to the console.
  */
 void Maze::saveMaze() {
     std::ofstream file(".gameConfig/maze.txt"); // Corrected file path

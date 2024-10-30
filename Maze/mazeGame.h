@@ -1,11 +1,6 @@
 #ifndef MAZEGAME_H
 #define MAZEGAME_H
 
-/**
- * @file mazeGame.h
- * @brief This file contains the implementation of a maze generator using recursive randomized Prim's Algorithm.
- */
-
 #include <iostream>
 #include <vector>
 #include <random>
@@ -14,9 +9,7 @@
 #include <fstream>
 #include "DFS.h"
 
-// Removed 'using namespace std;' to prevent namespace pollution in header files
-
-#define SIZE 55 // Update the size of the maze here
+#define SIZE 55 // Update the size of the maze here (default: 55)
 #define WALL 1
 #define PATH 0
 

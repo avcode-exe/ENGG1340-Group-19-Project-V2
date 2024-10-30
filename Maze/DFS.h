@@ -4,8 +4,6 @@
 #include <vector>
 #include <fstream>
 
-// Removed 'using namespace std;' from header file
-
 struct Cell {
     int row;
     int col;
@@ -13,15 +11,16 @@ struct Cell {
 };
 
 /**
- * Performs a depth-first search (DFS) on a maze to find a path from a given starting position to a goal position.
- *
- * @param maze The maze represented as a 2D vector of characters.
+ * @brief Performs a Depth-First Search (DFS) on a maze to find a path from the start position to the goal position.
+ * 
+ * @param maze A reference to a 2D vector representing the maze, where each cell contains a character.
  * @param row The current row position in the maze.
  * @param col The current column position in the maze.
- * @param path A list of cells representing the path from the starting position to the goal position.
+ * @param path A pointer to a Cell object that stores the path from the start to the goal.
  * @param goalRow The row position of the goal in the maze.
  * @param goalCol The column position of the goal in the maze.
- * @return True if a path from the starting position to the goal position is found, false otherwise.
+ * @return true If a path from the start to the goal is found.
+ * @return false If no path from the start to the goal is found.
  */
 bool dfs(std::vector<std::vector<char>>& maze, int row, int col, Cell*& path, int goalRow, int goalCol);
 

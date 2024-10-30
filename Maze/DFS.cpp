@@ -60,11 +60,14 @@ void deletePath(Cell *path) {
 }
 
 /**
- * @brief The main function reads a maze from a file, performs a depth-first
- * search (DFS) to find a path from the start to the goal, and prints the maze
- * with the path marked.
+ * @brief Finds a path in a maze using Depth-First Search (DFS) algorithm.
  *
- * @return int Returns 0 if the program executed successfully.
+ * This function reads a maze configuration from a file located at ".gameConfig/maze.txt",
+ * initializes the start and goal positions, and attempts to find a path from the start
+ * to the goal using DFS. If the file cannot be opened or the maze is invalid, the function
+ * returns nullptr.
+ *
+ * @return Cell* Pointer to the path found, or nullptr if no path is found or an error occurs.
  */
 Cell *findPath() {
     ifstream file(".gameConfig/maze.txt");

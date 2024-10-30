@@ -13,7 +13,17 @@
 using namespace std;
 
 /**
- * @brief Load the minesweeper game board from minefield.txt
+ * @brief Loads the minefield configuration from a file into a 2D array.
+ *
+ * This function reads the minefield configuration from the file located at
+ * ".gameConfig/minefield.txt" and populates the provided 2D array `cord` with
+ * the minefield data. Each element in the array represents a cell in the minefield.
+ *
+ * @param cord A 2D array of characters where the minefield configuration will be stored.
+ *
+ * @note The function assumes that the file ".gameConfig/minefield.txt" exists and is
+ *       formatted correctly. If the file cannot be opened, the function will print
+ *       an error message and terminate the program.
  */
 void loadMinefield(char cord[][MSIZE]) {
     string minefield_stream;
@@ -39,11 +49,17 @@ void loadMinefield(char cord[][MSIZE]) {
 }
 
 /**
- * @brief Display the game board
- * @param posX x-coordinate
- * @param posY y-coordinate
- * @param flagMode If the player places a flag or not
- * @param message Error message to be printed
+ * @brief Displays the Minesweeper game board and current status.
+ *
+ * This function renders the Minesweeper game board on the screen using ncurses.
+ * It highlights the current position of the cursor, flagged tiles, and mines.
+ * Additionally, it displays the current coordinates, flag mode status, and a message.
+ *
+ * @param cord A 2D array representing the Minesweeper game board.
+ * @param posX The current X-coordinate of the cursor.
+ * @param posY The current Y-coordinate of the cursor.
+ * @param flagMode A boolean indicating whether the flag mode is active.
+ * @param message A string containing a message to be displayed.
  */
 void display(char cord[][MSIZE], int posX, int posY, bool flagMode, string message) {
     move(0, 0);
@@ -81,7 +97,11 @@ void display(char cord[][MSIZE], int posX, int posY, bool flagMode, string messa
 }
 
 /**
- * @brief Initialize the game board by filling every tile with walls
+ * @brief Initializes the game board for Minesweeper.
+ * 
+ * This function sets up the game board by filling each cell with the character '#'.
+ * 
+ * @param cord A 2D array representing the game board.
  */
 void initGameBoard(char cord[][MSIZE]) {
     for (int r = 0; r < MSIZE; r++) {
@@ -92,9 +112,17 @@ void initGameBoard(char cord[][MSIZE]) {
 }
 
 /**
- * @brief Check if the selected tile has already been revealed
- * @param row Row number/y-coordinate
- * @param col Column number/x-coordinate
+ * @brief Checks if a cell in the Minesweeper grid has been revealed.
+ * 
+ * This function determines whether a specific cell in the Minesweeper grid
+ * has been revealed by checking its character value. A cell is considered
+ * revealed if it does not contain a '#' (hidden cell) or 'F' (flagged cell).
+ * 
+ * @param cord The Minesweeper grid represented as a 2D array of characters.
+ * @param row The row index of the cell to check.
+ * @param col The column index of the cell to check.
+ * @return true If the cell is revealed.
+ * @return false If the cell is hidden or flagged.
  */
 bool checkIfRevealed(char cord[][MSIZE], int row, int col) {
     if (cord[row][col] == '#' || cord[row][col] == 'F') {
@@ -104,10 +132,18 @@ bool checkIfRevealed(char cord[][MSIZE], int row, int col) {
 }
 
 /**
- * @brief Recursively reveal the selected tile and tiles nearby until they reach empty tiles
- * @param row Row number/y-coordinate
- * @param col Column number/x-coordinate
- * @param visited A list of coordinates that have already been visited by the player
+ * @brief Reveals the position on the game board and recursively reveals adjacent positions if they are empty.
+ * 
+ * This function updates the game board by revealing the content of the specified position. If the revealed position
+ * is empty (represented by a space character ' '), it recursively reveals all adjacent positions. The function also
+ * keeps track of visited positions to avoid infinite recursion.
+ * 
+ * @param cord The original board containing the actual positions and their values.
+ * @param gameBoard The game board that is being revealed to the player.
+ * @param row The row index of the position to reveal.
+ * @param col The column index of the position to reveal.
+ * @param visited A reference to a vector of vectors that keeps track of visited positions to avoid revisiting them.
+ * @return true if the position was successfully revealed and it was not a mine, false otherwise.
  */
 bool revealPos(char cord[][MSIZE], char gameBoard[][MSIZE], int row, int col, vector<vector<int>> &visited) {
     if (std::find(visited.begin(), visited.end(), vector<int>{row, col}) ==
@@ -135,9 +171,15 @@ bool revealPos(char cord[][MSIZE], char gameBoard[][MSIZE], int row, int col, ve
 }
 
 /**
- * @brief Check if a mine is found in the selected tile
- * @param row Row number/y-coordinate
- * @param col Column number/x-coordinate
+ * @brief Checks if a mine is found at the specified coordinates.
+ *
+ * This function checks the given 2D array of characters to determine if there is a mine ('X')
+ * at the specified row and column.
+ *
+ * @param cord A 2D array of characters representing the game board.
+ * @param row The row index to check.
+ * @param col The column index to check.
+ * @return true if a mine is found at the specified coordinates, false otherwise.
  */
 bool checkIfMineFound(char cord[][MSIZE], int row, int col) {
     if (cord[row][col] == 'X') {
@@ -147,9 +189,14 @@ bool checkIfMineFound(char cord[][MSIZE], int row, int col) {
 }
 
 /**
- * @brief Place a flag on the selected tile
- * @param row Row number/y-coordinate
- * @param col Column number/x-coordinate
+ * @brief Toggles a flag at the specified coordinates on the Minesweeper board.
+ *
+ * This function places a flag ('F') at the given row and column if the cell is currently unmarked ('#').
+ * If the cell already has a flag ('F'), it removes the flag and reverts the cell back to unmarked ('#').
+ *
+ * @param cord The Minesweeper board represented as a 2D array of characters.
+ * @param row The row index of the cell to place or remove the flag.
+ * @param col The column index of the cell to place or remove the flag.
  */
 void placeFlag(char cord[][MSIZE], int row, int col) {
     if (cord[row][col] == '#') {
@@ -163,7 +210,14 @@ void placeFlag(char cord[][MSIZE], int row, int col) {
 }
 
 /**
- * @brief Check if the player wins the game (i.e. no more tiles are left unrevealed or not flagged)
+ * @brief Checks if the game is won by verifying if all cells are revealed.
+ *
+ * This function iterates through the entire game board and checks if there are any cells
+ * that are still hidden (represented by the character '#'). If any hidden cell is found,
+ * the game is not won yet.
+ *
+ * @param cord A 2D array representing the game board.
+ * @return true if all cells are revealed and the game is won, false otherwise.
  */
 bool checkIfGameWin(char cord[][MSIZE]) {
     bool gameWin = true;
@@ -174,10 +228,19 @@ bool checkIfGameWin(char cord[][MSIZE]) {
             }
         }
     };
-
     return gameWin;
 }
 
+/**
+ * @brief Main function for the Minesweeper game.
+ * 
+ * This function initializes the game board and minefield, and handles the main game loop.
+ * The player can navigate the game board using 'w', 'a', 's', 'd' keys and can reveal tiles
+ * or place flags using the space bar and 'f' key respectively. The game continues until the
+ * player either wins by revealing all non-mine tiles or loses by revealing a mine.
+ * 
+ * @return int Returns 0 if the player wins, and -1 if the player loses.
+ */
 int minesweeper() {
     minewsweepergenmain();
     char usrInput{};
@@ -251,7 +314,6 @@ int minesweeper() {
         }
     };
 
-    display(gameBoard, posX, posY, flagMode,
-            "Cleared!");
+    display(gameBoard, posX, posY, flagMode, "Cleared!");
     return 0;
 }

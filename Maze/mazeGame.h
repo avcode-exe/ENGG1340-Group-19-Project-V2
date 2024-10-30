@@ -2,7 +2,7 @@
 #define MAZEGAME_H
 
 /**
- * @file maze generator.cpp
+ * @file mazeGame.h
  * @brief This file contains the implementation of a maze generator using recursive randomized Prim's Algorithm.
  */
 
@@ -72,7 +72,6 @@ public:
      */
     void markNoMonsterZone(int cx, int cy);
 
-
     /**
      * @brief Places monsters in dead ends near the entrance of the maze.
      * @param density The density of monsters to be placed (0.0 to 1.0).
@@ -109,8 +108,21 @@ public:
      */
     void placeCheckpoints();
 
+    /**
+     * @brief Checks if the cell at the given coordinates is on the path.
+     * @param x The x-coordinate of the cell
+     * @param y The y-coordinate of the cell
+     * @param path The path to check against
+     * @return True if the cell is on the path, false otherwise
+     */
     bool isOnPath(int x, int y, Cell* path);
 
+    /**
+     * @brief Checks if the cell at the given coordinates is near another monster.
+     * @param x The x-coordinate of the cell
+     * @param y The y-coordinate of the cell
+     * @return True if the cell is near another monster, false otherwise
+     */
     bool isNearOtherMonster(int x, int y);
 
     /**
@@ -119,8 +131,8 @@ public:
     void printMaze();
 
     /**
-    * @brief Saves the maze to a file.
-    */
+     * @brief Saves the maze to a file.
+     */
     void saveMaze();
 };
 

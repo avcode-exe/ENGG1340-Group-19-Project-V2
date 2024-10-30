@@ -1,6 +1,6 @@
 # Define compiler and flags
 CXX = g++
-CPPFLAGS = -pedantic-errors -Werror -std=c++11 -fPIE
+CPPFLAGS = -pedantic-errors -Werror -std=c++17 -fPIE
 LDFLAGS = -lncurses -lpthread
 
 # Define paths

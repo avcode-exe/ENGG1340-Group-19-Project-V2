@@ -1,1 +1,3 @@
-.gameConfig/
+.gameConfig/maze.txt
+.gameConfig/minefield.txt
+.gameConfig/status.txt
